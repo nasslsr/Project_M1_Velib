@@ -98,4 +98,24 @@ db.livres.updateMany({type:"romance"},
 /* Q.17  Incrémenter par 2 les notes des livres policiers. */
 db.livres.aggregate( {$match:{type:"romance"}}, {$project:{titre:1}},{$sort:{note:-1}})
 
+/*Question 18 : Ajouter un tableau "formats" contenant "kindle,poche,boché" pour les livres policiers*/
+/*db.Livre.updateMany({type: "policier"}, {$push:{formats:["kindle","poche","boché"]}})
+db.Livre.find()
+*/
+
+/*Supprimer kindle et poche */
+/*db.Livre.updateMany({type: "policier"}, {$pull:{formats:{$in:["kindle","poche"]}}})
+db.Livre.find()  si on veut supprimer plusieurs valeurs d'un tableau en meme temps il faut leur rajouter les crochet ouvert et fermé
+
+Si on veut supprimer une seule valeur dans un tableau on fait :
+db.Livre.updateMany({type:"policier"},{$pull : {format: "kindle"}})
+ */
+
+
+/* question 19*/
+db.livres.updateMany({titre:"Mortel Deja"},
+    {$push:{formats:{$each:["royal"],$position:0}}})
+db.find()
+/* $each est utilisé dans les opérations de mise à jour pour insérer ou ajouter des éléments à un tableau.*/
+
 
