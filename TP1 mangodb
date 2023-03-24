@@ -1,0 +1,101 @@
+/* Q.1 créer la base de données « bibliotheque »*/
+use bibliotheque
+
+/* Q.2 créer la collection « livres »
+db.createCollection('livres');*/
+
+/* Q.3 insérer les données mentionnées dans le tableau ci-dessous.*/
+ db.livres.insertOne(
+    {
+     titre: "La Nuit où les étoiles se sont éteintes",
+    datepub: new Date("2021-06-20"),
+    nbrepage: 496,
+    type: "romance",
+    auteurs: ['Nine Gorman','Marie Alhinho'],
+    note : 4
+  }
+    )
+
+
+db.livres.find()
+
+db.posts.find( {type: "policier"} )
+
+/* Q.4 Afficher les titres des livres policiers. */
+db.livres.find({type:"policier"},{titre:1})
+ db.livres.find()
+
+/* Q.5 Afficher les livres qui ont une note strictement supérieure à 3 */
+db.livres.find({ note: { $gt: 3 } })
+
+/* Q.6 Afficher les titres, les notes et le types des livres qui ont une note strictement supérieure à 3 et un type policier.*/
+ db.livres.find(
+     {$and: [
+        {note:{$gt:3}},{type:'policier'}
+         ]},
+     {titre:1,_id:0,note:1,type:1})
+
+/* Q.7 Afficher les titres des livres qui ont un seul auteur.*/
+db.livres.find({auteurs:{$size:1}},{titre:1})
+
+/* Q.8 Refaire la requête du question 7. Les résultats seront affichés par ordre croissant selon les titres. */
+db.livres.find({auteurs:{$size:1}},{titre:1}).sort({titre:1})
+
+/* Q.9 Afficher le nombre de livres romantiques.*/
+db.livres.countDocuments({type:"romance"})
+/* ou db.livres.find({type:"romance"}).count()*/
+
+/* Q.10 Afficher les titres et les dates de publication des livres publiés après 15 décembre 2017.*/
+db.livres.find({datepub : {$gt : new Date("2017-12-15") }},{titre:1, _id:0}) /* ou ISODATE("") à la place de new Date*/
+
+/* Q.11  Afficher les titres et les dates de publication des livres publiés entre 01 janvier 2013 et 30 décembre 2019 ou un nombre de pages inférieur à 400.*/
+ db.livres.find
+(
+    {
+        $or : [
+            {datepub : {$gt : new Date("2013-01-01"),
+            $lt : new Date("2019-12-30")}},
+                {
+                    nbrepage : {$lt : 400}
+                }]
+    },
+    {titre : 1, _id : 0, datepub : 1}
+)
+
+/* Q.12 Afficher les détails des livres qui ont un titre qui commence par « L » */
+ db.livres.find({ titre: { $regex: /^L/ } },{titre:1,nbrepage:1,auteurs:1,type:1,_id:0})
+
+/* Q.13 Afficher les titres des livres qui ont des noms des auteurs contenants « in »*/
+ db.livres.find({ auteurs: { $regex: /in/ } }, { titre: 1, _id: 0 })
+
+/* Q.14 Afficher les détails des livres qui ont des titres qui commencent par une voyelle.*/
+ db.livres.find({ titre: { $regex: /^[aeiouy]/i } },{titre:1,nbrepage:1,auteurs:1,type:1,_id:0}) /* /i n MongoDB, l'option /i dans une expression régulière est utilisée pour indiquer une recherche insensible à la casse.
+                                                                        Cela signifie que la requête considérera les lettres majuscules et minuscules comme équivalentes lors de la recherche dans les champs de la collection */
+
+/* Q.15 Ajouter le champ « langue » avec la valeur « française » pour tous les livres */
+db.livres.updateMany({}, {$set : {langues : "française"}},{multi:true})
+/* accolade vide = applique pour tous les livres
+    multi=true : sinon ca s'arrette au 1er => marche que sur la version 4.0 de mangodb */
+    
+    
+
+/* modifier la valeur du champ "type" de "romance" à "histoire" dans le livre "Les Lettres des Roses" :*/
+db;livres.updateMany({ titre: "Les Lettres des Roses" },
+   { $set: { type: "histoire" } }
+)
+
+/* supprimer le champ langue pour les livres qui ont une note >4 */
+db.livres.updateMany(
+   { note: { $gt: 4 } },
+   { $unset: { langue: "" } }
+)
+
+
+/* Q.16 Ajouter le champ « editeur » avec la valeur « Albin Michel » pour les livres romantiques. */
+db.livres.updateMany({type:"romance"},
+  {$set : {editeur : "Albin Michel"}})
+
+/* Q.17  Incrémenter par 2 les notes des livres policiers. */
+db.livres.aggregate( {$match:{type:"romance"}}, {$project:{titre:1}},{$sort:{note:-1}})
+
+
