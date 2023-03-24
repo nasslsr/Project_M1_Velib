@@ -96,6 +96,12 @@ db.livres.updateMany({type:"romance"},
   {$set : {editeur : "Albin Michel"}})
 
 /* Q.17  Incrémenter par 2 les notes des livres policiers. */
+
+/* Question 18*/ 
+db.livres.updateMany({type:"policier"},{$push:{formats:["kindle","poche","broché"]}})
+
+
 db.livres.aggregate( {$match:{type:"romance"}}, {$project:{titre:1}},{$sort:{note:-1}})
+
 
 
