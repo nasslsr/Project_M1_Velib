@@ -1,0 +1,25 @@
+brew tap mongodb/brew
+
+
+brew update
+
+
+
+
+After brew installation, here are commands:
+
+xcode-select --install
+brew tap mongodb/brew
+brew install mongodb-community@5.0
+
+brew services start mongodb-community@5.0
+brew services stop mongodb-community@5.0
+
+mongod --config /opt/homebrew/etc/mongod.conf --fork
+
+mongosh
+
+
+show des;
+
+exit 
