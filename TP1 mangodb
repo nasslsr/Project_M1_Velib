@@ -98,4 +98,7 @@ db.livres.updateMany({type:"romance"},
 /* Q.17  Incrémenter par 2 les notes des livres policiers. */
 db.livres.aggregate( {$match:{type:"romance"}}, {$project:{titre:1}},{$sort:{note:-1}})
 
+/* pour la jointure faut mettre des documents dans des documents*/
+/* donc qd on veut creer un index avec un doc ui est dans un doc il faut il faut appeler le doc qui contient le truc dqu'on veut indexer
+* exemple : createIndex{contact.numero}  */
 
