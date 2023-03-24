@@ -99,3 +99,25 @@ db.livres.updateMany({type:"romance"},
 db.livres.aggregate( {$match:{type:"romance"}}, {$project:{titre:1}},{$sort:{note:-1}})
 
 
+
+
+
+
+
+/* get index et create un index on a mis 1 pour avoir dans ordre croissant : il faut tjrs dire si on veut en ordre croissant ou decroissant*/
+db.livres.getIndexes()
+db.livres.createIndex(
+    {notes:1}
+    )
+db.livres.createIndex(
+    {notes:1},
+    {name:"donner un nom à notre index"}
+    )
+
+/* creer index composé*/
+
+db.livres.createIndex(
+    {titre:1, nbrepage:-1},
+    {name:"titre_nbre"} /* optionnel c'est juste donner un nom a notre index*/
+    )
+
